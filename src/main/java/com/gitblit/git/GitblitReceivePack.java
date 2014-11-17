@@ -228,6 +228,10 @@ public class GitblitReceivePack extends ReceivePack implements PreReceiveHook, P
 			// identity of the merging user.
 			boolean allRejected = false;
 			for (ReceiveCommand cmd : commands) {
+                if (ReceiveCommand.Type.CREATE.equals(cmd.getType())) {
+                    LOGGER.debug("Skipped ref creation during committer verification process");
+                    continue;
+                }
 				String firstParent = null;
 				try {
 					List<RevCommit> commits = JGitUtils.getRevLog(rp.getRepository(), cmd.getOldId().name(), cmd.getNewId().name());
